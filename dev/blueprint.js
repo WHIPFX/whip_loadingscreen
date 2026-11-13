@@ -86,7 +86,7 @@ ln(`M0 1400H${PW}M0 1580H${PW}`, 0.6, 2.4);
 ln(`M0 1490H${PW}`, 0.45, 2, ' stroke-dasharray="60 40"');
 
 // ---------------------------------------------------------------- the homes: Mirror Park plans
-// Three of whippy_mirror_park_homes' designs, copied from its client.lua: the footprint (`poly`, metres, in the
+// Three of whip_homes_mirrorpark' designs, copied from its client.lua: the footprint (`poly`, metres, in the
 // interior's own frame, y north) and the outside doors ([name, x, y]; door 01 is the front, turned to face the road).
 // The interiors' walls are not in that data, so a plan is the outline, its doors and its room count, at HOME_S units a
 // metre (the cars are at 100: a site plan beside them), its front on HOME_FRONT, left-aligned on HOME_X.
