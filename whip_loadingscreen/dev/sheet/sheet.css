@@ -1,0 +1,62 @@
+/* ========================================
+   The blueprint sheet, as a web page: what the three.js screen is made from. NEVER SENT TO PLAYERS.
+
+   dev/blueprint.js writes blueprint.css and blueprint.js here; dev/bp/export.js lays them out flat with this
+   sheet, photographs every piece and reads every animation into html/bp (the screen's scene.json and atlas).
+   dev/bp/compare.js plays the sheet (stage.js) beside the three.js screen to check them against each other.
+   ======================================== */
+
+/* ---- To change (no need to touch anything else), then run `node dev/blueprint.js` ---- */
+:root {
+    /* How long the sheet takes to drift one length of its drawing, in seconds: higher is slower. */
+    --bp-loop: 107s;
+
+    /* The depth of field: the blur at the top and bottom of the screen, three layers from light to
+       strong. 0px turns a layer off. */
+    --bp-blur-1: 2.5px;
+    --bp-blur-2: 7px;
+    --bp-blur-3: 14px;
+}
+
+/* The sheet's typefaces, its own copies (fonts/): whip's own (whip_core/html/css/fonts.css), Latin only: Barlow for
+   text, a file a weight; Bricolage Grotesque for titles, one variable file. IBM Plex Mono is the sheet's lettering. */
+@font-face { font-family: 'Barlow'; font-style: normal; font-weight: 400; font-display: block; src: url('fonts/barlow-400-latin.woff2') format('woff2'); }
+@font-face { font-family: 'Barlow'; font-style: normal; font-weight: 500; font-display: block; src: url('fonts/barlow-500-latin.woff2') format('woff2'); }
+@font-face { font-family: 'Barlow'; font-style: normal; font-weight: 600; font-display: block; src: url('fonts/barlow-600-latin.woff2') format('woff2'); }
+@font-face { font-family: 'Barlow'; font-style: normal; font-weight: 700; font-display: block; src: url('fonts/barlow-700-latin.woff2') format('woff2'); }
+@font-face { font-family: 'Barlow'; font-style: normal; font-weight: 800; font-display: block; src: url('fonts/barlow-800-latin.woff2') format('woff2'); }
+@font-face {
+    font-family: 'Bricolage Grotesque';
+    font-style: normal;
+    font-weight: 200 800;
+    font-display: block;
+    src: url('fonts/bricolage-latin.woff2') format('woff2');
+}
+@font-face {
+    font-family: 'IBM Plex Mono';
+    font-style: normal;
+    font-weight: 400;
+    font-display: block;
+    src: url('fonts/ibmplexmono-400-latin.woff2') format('woff2');
+}
+
+html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background: #000;
+}
+
+/* The sheet played (compare.js): a 1920 x 1080 stage, centred and scaled to cover the window by stage.js. */
+#stage {
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    width: 1920px;
+    height: 1080px;
+    transform: translate(-50%, -50%);
+    transform-origin: 50% 50%;
+    pointer-events: none;
+}

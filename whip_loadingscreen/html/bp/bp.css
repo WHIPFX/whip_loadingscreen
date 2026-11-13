@@ -1,0 +1,5 @@
+/* The three.js blueprint's canvas, and the curtain held until its first frame is drawn (start.js adds .bp-ready then,
+   or when it cannot run, lifting the curtain onto black). */
+#bp { position: fixed; inset: 0; width: 100%; height: 100%; display: block; }
+#curtain { animation-play-state: paused; }
+.bp-ready #curtain { animation-play-state: running; }

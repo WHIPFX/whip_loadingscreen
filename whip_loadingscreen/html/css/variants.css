@@ -1,0 +1,79 @@
+/* ========================================
+   whip_loadingscreen — LOGO VARIANTS, for trying out in the browser preview only
+
+   preview.html opens the screen as index.html?variant=...&bg=..., and index.html loads this file
+   only then. It is not in fxmanifest.lua's `files`, so it never reaches players, and in game the
+   screen is always the original.
+
+   The variants. The white one — white letters, black holes, a lit circle white in a black ring —
+   is the real screen (loading.css), so it is the preview's "Main"; the artwork's own colours are
+   `charcoal`:
+     thick-outline   the letters as a thick outline, hollow; the empty circles outlined too
+     thin-outline    the same, with a thin line
+     black           everything black but the lights (on a black screen: only the lights show)
+     charcoal        the artwork's own colours: charcoal letters, grey rings (the first version)
+   and a white background as well as black (bg=white), to see each on either.
+
+   The light, the icons and the fade are the original's: only colours and lines change here.
+   ======================================== */
+
+/* ---- The background ---- */
+
+html[data-bg="white"],
+html[data-bg="white"] body { background: #fff; }
+
+/* The outline colour: the logo's own light grey on black, its charcoal on white. */
+html                  { --v-outline: #bebebe; }
+html[data-bg="white"] { --v-outline: #3a3a3a; }
+
+/* ---- Thick outline ---- */
+
+html[data-variant="thick-outline"] #logo .letters {
+    fill: none;
+    stroke: var(--v-outline);
+    stroke-width: 9;
+}
+html[data-variant="thick-outline"] #logo .hole {
+    fill: none;
+    stroke: var(--v-outline);
+    stroke-width: 4;
+}
+
+/* ---- Thin outline ---- */
+
+html[data-variant="thin-outline"] #logo .letters {
+    fill: none;
+    stroke: var(--v-outline);
+    stroke-width: 2.5;
+}
+html[data-variant="thin-outline"] #logo .hole {
+    fill: none;
+    stroke: var(--v-outline);
+    stroke-width: 1.5;
+}
+
+/* The lit circles in an outlined logo: the light itself, with a line round it instead of the grey
+   ring (a solid ring would be the only filled shape left). */
+html[data-variant$="-outline"] #logo .ring { fill: none; stroke: var(--v-outline); }
+html[data-variant="thick-outline"] #logo .ring { stroke-width: 4; }
+html[data-variant="thin-outline"]  #logo .ring { stroke-width: 1.5; }
+
+/* ---- Black ---- */
+
+html[data-variant="black"] #logo {
+    --logo-letter: #000;
+    --logo-ring:   #5a5a5a;
+    --logo-lit:    #d9d9d9;
+    --logo-hole:   #262626;
+    --logo-icon:   #000;
+}
+
+/* ---- Charcoal: the artwork's own colours ---- */
+
+html[data-variant="charcoal"] #logo {
+    --logo-letter: #3a3a3a;
+    --logo-ring:   #898989;
+    --logo-lit:    #d9d9d9;
+    --logo-hole:   #242424;
+    --logo-icon:   #3a3a3a;
+}

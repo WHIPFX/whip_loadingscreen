@@ -1,0 +1,90 @@
+/* ========================================
+   whip_loadingscreen
+
+   A blueprint drifting under the whip logo, its I the loading light (see THE LOGO). The blueprint is drawn
+   with three.js on #bp (bp/, made by dev/blueprint.js: its speed and blur are set in dev/sheet/sheet.css).
+   ======================================== */
+
+/* ---- To change (no need to touch anything else) ---- */
+:root {
+    /* How long the blueprint takes to fade in from black when the screen first shows. */
+    --bp-fade-in: 1.4s;
+}
+
+html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background: #000;
+}
+
+/* Black over the blueprint, fading away as the screen first shows (held until its first frame: bp/bp.css). The
+   logo is above it, there at once. */
+#curtain {
+    position: fixed;
+    inset: 0;
+    background: #000;
+    pointer-events: none;
+    animation: curtainUp var(--bp-fade-in) ease-out 0.2s both;
+}
+@keyframes curtainUp {
+    from { opacity: 1; }
+    to   { opacity: 0; }
+}
+
+/* ========================================
+   THE LOGO — and its loading indicator
+
+   Centred, white, at the landing page's size, so it is where the landing page shows it next. Drawn as
+   SVG in index.html; js/logo.js moves the light.
+
+   THE I's CIRCLES: one lit at a time, top to bottom. A circle LIGHTS AT ONCE (.dot.lit sets
+   `transition: none`) and FADES when the light moves on (the transition on plain .dot's light), its dark
+   silhouette staying underneath. The fade is a little longer than a step, so a faint trail follows the
+   light down.
+   ======================================== */
+
+#logo {
+    --logo-letter: #fff;
+    --logo-ring:   #000;      /* the black ring that sets a lit circle apart from the white letter */
+    --logo-lit:    #fff;
+    --logo-hole:   #000;      /* an unlit circle: a black hole in the letter */
+    --logo-icon:   #000;      /* the interaction icon on a lit I circle */
+    --logo-fade:   0.55s;
+
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    /* The landing page's size (whip_core's css/landing.css). */
+    width: min(38vw, 149vh);
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+    filter: drop-shadow(0 4px 22px rgba(0, 0, 0, 0.6));
+}
+
+#logo svg {
+    display: block;
+    width: 100%;
+    height: auto;
+    overflow: visible;
+}
+
+#logo .letters { fill: var(--logo-letter); }
+#logo .ring    { fill: var(--logo-ring); }
+#logo .disc    { fill: var(--logo-lit); }
+#logo .hole    { fill: var(--logo-hole); }
+#logo .icon    { color: var(--logo-icon); }   /* the icons draw in currentColor */
+
+/* Unlit: the light fades away... */
+#logo .dot .light {
+    opacity: 0;
+    transition: opacity var(--logo-fade) cubic-bezier(0.25, 0.6, 0.35, 1);
+}
+
+/* ...lit: on at once. */
+#logo .dot.lit .light {
+    opacity: 1;
+    transition: none;
+}

@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>whip loading screen — preview</title>
+<!--
+  PREVIEW THE LOADING SCREEN IN A BROWSER: run `node dev/bp/serve.js` and open the preview address it
+  prints. The real screen (index.html) fills the window, exactly as it plays while a player connects.
+  Refresh (F5) after a change to see it. (Double-clicked, this file shows only the logo: browsers don't
+  run the blueprint's module from disk.)
+
+  LOGO VARIANTS, to try out: the buttons along the bottom — or keys 1-5 — switch the logo between
+  the real screen ("Main", white on black) and the experiments in css/variants.css, and B switches
+  the background between black and white. The choice stays in
+  this page's address, so a refresh keeps it. In game the screen is always "Main"; the variants
+  live only here.
+
+  FOR LOOKING ONLY. Neither this file nor css/variants.css is in fxmanifest.lua's `files`, so they
+  are never sent to players. Keys: 1-5 variant, B background, R reload the screen, H hide the bar.
+-->
+<style>
+    html, body { margin: 0; height: 100%; background: #000; overflow: hidden; }
+    /* Clicks pass through the screen (it has nothing to click), so this page keeps the keys. */
+    iframe { position: fixed; inset: 0; width: 100%; height: 100%; border: 0; pointer-events: none; }
+
+    #bar {
+        position: fixed; left: 50%; bottom: 18px; z-index: 2; transform: translateX(-50%);
+        display: flex; align-items: center; gap: 6px; padding: 6px;
+        background: rgba(20, 20, 22, 0.82); border: 1px solid rgba(255, 255, 255, 0.10);
+        border-radius: 10px; box-shadow: 0 6px 24px rgba(0, 0, 0, 0.35);
+        font: 600 12px/1 system-ui, 'Segoe UI', sans-serif; letter-spacing: 0.2px;
+        user-select: none;
+    }
+    #bar .tag { color: rgba(255, 255, 255, 0.5); padding: 0 8px 0 6px; }
+    #bar .sep { width: 1px; height: 18px; background: rgba(255, 255, 255, 0.12); margin: 0 4px; }
+    #bar button {
+        font: inherit; color: rgba(255, 255, 255, 0.72); background: transparent;
+        border: 0; border-radius: 6px; padding: 7px 10px; cursor: pointer;
+    }
+    #bar button:hover { color: #fff; background: rgba(255, 255, 255, 0.08); }
+    #bar button.on { color: #111; background: #e6e6e6; }
+    #bar kbd { font: inherit; opacity: 0.5; margin-right: 5px; }
+</style>
+</head>
+<body>
+<iframe id="screen" title="whip loading screen"></iframe>
+
+<div id="bar">
+  <span class="tag">Preview</span>
+  <button data-variant=""><kbd>1</kbd>Main (white)</button>
+  <button data-variant="thick-outline"><kbd>2</kbd>Thick outline</button>
+  <button data-variant="thin-outline"><kbd>3</kbd>Thin outline</button>
+  <button data-variant="black"><kbd>4</kbd>Black</button>
+  <button data-variant="charcoal"><kbd>5</kbd>Charcoal (first)</button>
+  <span class="sep"></span>
+  <button data-bg="black"><kbd>B</kbd>Black bg</button>
+  <button data-bg="white">White bg</button>
+</div>
+
+<script>
+(function () {
+    'use strict';
+
+    var frame = document.getElementById('screen');
+    var bar = document.getElementById('bar');
+    var VARIANTS = ['', 'thick-outline', 'thin-outline', 'black', 'charcoal'];
+
+    // What is showing, kept in the address (#variant=...&bg=...) so a refresh keeps it.
+    var state = { variant: '', bg: 'black' };
+    (function read() {
+        var v = /variant=([a-z-]*)/.exec(location.hash), b = /bg=(white|black)/.exec(location.hash);
+        if (v && VARIANTS.indexOf(v[1]) >= 0) state.variant = v[1];
+        if (b) state.bg = b[1];
+    })();
+
+    function show() {
+        var q = [];
+        if (state.variant) q.push('variant=' + state.variant);
+        if (state.bg !== 'black') q.push('bg=' + state.bg);
+        frame.src = 'index.html' + (q.length ? '?' + q.join('&') : '');
+        document.body.style.background = state.bg === 'white' ? '#fff' : '#000';
+        history.replaceState(null, '', '#variant=' + state.variant + '&bg=' + state.bg);
+        var buttons = bar.querySelectorAll('button');
+        for (var i = 0; i < buttons.length; i++) {
+            var btn = buttons[i];
+            var on = btn.hasAttribute('data-variant') ? btn.getAttribute('data-variant') === state.variant
+                                                      : btn.getAttribute('data-bg') === state.bg;
+            btn.classList.toggle('on', on);
+        }
+    }
+
+    bar.addEventListener('click', function (e) {
+        var btn = e.target.closest('button');
+        if (!btn) return;
+        if (btn.hasAttribute('data-variant')) state.variant = btn.getAttribute('data-variant');
+        if (btn.hasAttribute('data-bg')) state.bg = btn.getAttribute('data-bg');
+        show();
+    });
+
+    window.addEventListener('keydown', function (e) {
+        var n = parseInt(e.key, 10);
+        if (n >= 1 && n <= VARIANTS.length) { state.variant = VARIANTS[n - 1]; show(); }
+        if (e.key === 'b' || e.key === 'B') { state.bg = state.bg === 'black' ? 'white' : 'black'; show(); }
+        if (e.key === 'r' || e.key === 'R') show();
+        if (e.key === 'h' || e.key === 'H') bar.style.display = bar.style.display === 'none' ? '' : 'none';
+    });
+
+    show();
+})();
+</script>
+</body>
+</html>

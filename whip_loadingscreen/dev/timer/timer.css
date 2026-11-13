@@ -1,0 +1,40 @@
+/* The timer over the blueprint, where the loading screen's logo sits, and the black it all fades into at 00:00
+   (timer.js). Only in the timer page dev/standalone.js --timer writes. */
+
+@font-face {
+    font-family: 'Whip Timer';
+    font-weight: 700;
+    font-display: block;
+    src: url('barlow-700-latin.woff2') format('woff2');
+}
+
+#timer {
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    color: #fff;
+    font: 700 min(15vw, 26.7vh) / 1 'Whip Timer', 'Segoe UI', sans-serif;
+    /* Every digit as wide as the others, so the time stands still while it counts. */
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+    pointer-events: none;
+    user-select: none;
+    filter: drop-shadow(0 4px 22px rgba(0, 0, 0, 0.6));
+}
+
+/* The colon at the digits' middle, not the small letters'. */
+#timer .colon {
+    display: inline-block;
+    transform: translateY(-0.07em);
+}
+
+#fade {
+    position: fixed;
+    inset: 0;
+    background: #000;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity var(--end-fade, 3s) ease-in-out;
+}
+.timer-over #fade { opacity: 1; }

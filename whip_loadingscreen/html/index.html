@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>whip — loading</title>
+<link rel="stylesheet" href="css/loading.css">
+<link rel="stylesheet" href="bp/bp.css">
+<script>
+  // BROWSER PREVIEW ONLY. preview.html asks for a logo variant or a white background in the address
+  // (?variant=...&bg=...), and only then is css/variants.css loaded. The game never adds either, so
+  // in game this does nothing and the screen is always the original.
+  (function () {
+    var v = /[?&]variant=([a-z-]+)/.exec(location.search), b = /[?&]bg=(white|black)/.exec(location.search);
+    if (!v && !b) return;
+    if (v) document.documentElement.setAttribute('data-variant', v[1]);
+    if (b) document.documentElement.setAttribute('data-bg', b[1]);
+    var link = document.createElement('link');
+    link.rel = 'stylesheet';
+    link.href = 'css/variants.css';
+    document.head.appendChild(link);
+  })();
+</script>
+</head>
+<body>
+
+<!-- The blueprint, drawn with three.js on #bp (bp/), the black it fades in from, and the logo over both. If it cannot
+     run (no WebGL 2), the screen stays black under the logo: there is no other version. -->
+<canvas id="bp" aria-hidden="true"></canvas>
+<div id="curtain"></div>
+
+<!--
+  THE WHIP LOGO, drawn as shapes (not a picture) so the I's four circles can light one at a time:
+  the loading indicator (js/logo.js). Traced from the logo artwork, in its own 1090 x 327 grid.
+
+  Every stroke is 66 wide. The lit circles are a disc (r 20.5) in a ring (r 26.5); an unlit one is
+  the dark silhouette alone (r 20). The W's and the P's circles are always lit.
+
+  Each of the I's circles wears one of whip's interaction icons while it is lit — a random one each
+  time (js/icons.js, js/logo.js) — in the .icon slot, cut to the disc's circle. The W's and the P's
+  always wear the same one, named by data-icon: pick up in the W, store in the P.
+-->
+<div id="logo" role="img" aria-label="whip">
+  <svg viewBox="58 46 997 235" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <clipPath id="dot-clip-w"><circle cx="95" cy="83" r="20.5"/></clipPath>
+      <clipPath id="dot-clip-p"><circle cx="897" cy="190" r="20.5"/></clipPath>
+      <clipPath id="dot-clip-0"><circle cx="710" cy="83" r="20.5"/></clipPath>
+      <clipPath id="dot-clip-1"><circle cx="710" cy="136.67" r="20.5"/></clipPath>
+      <clipPath id="dot-clip-2"><circle cx="710" cy="190.33" r="20.5"/></clipPath>
+      <clipPath id="dot-clip-3"><circle cx="710" cy="244" r="20.5"/></clipPath>
+    </defs>
+    <g class="letters">
+      <!-- W -->
+      <path d="M62 83 A33 33 0 0 1 128 83 L128 211 L169 211 L169 50 L235 50 L235 211 L276 211 L276 50 L342 50 L342 277 L117 277 A55 55 0 0 1 62 222 Z"/>
+      <!-- H -->
+      <path d="M369 50 H435 V157 H583 V50 H649 V277 H583 V223 H435 V277 H369 Z"/>
+      <!-- I -->
+      <rect x="677" y="50" width="66" height="227" rx="33"/>
+      <!-- P -->
+      <path d="M771 50 H1001 A50 50 0 0 1 1051 100 V173 A50 50 0 0 1 1001 223 H897 A33 33 0 0 1 897 157 H985 V116 H837 V277 H771 Z"/>
+    </g>
+    <!-- Always lit: the W's, with the pick-up icon, and the P's, with the store icon. -->
+    <g class="light" data-icon="pickup"><circle class="ring" cx="95" cy="83" r="26.5"/><circle class="disc" cx="95" cy="83" r="20.5"/><g class="icon" clip-path="url(#dot-clip-w)"></g></g>
+    <g class="light" data-icon="store"><circle class="ring" cx="897" cy="190" r="26.5"/><circle class="disc" cx="897" cy="190" r="20.5"/><g class="icon" clip-path="url(#dot-clip-p)"></g></g>
+    <!-- The I's four, top to bottom: the loading indicator. -->
+    <g class="dot"><circle class="hole" cx="710" cy="83" r="20"/><g class="light"><circle class="ring" cx="710" cy="83" r="26.5"/><circle class="disc" cx="710" cy="83" r="20.5"/><g class="icon" clip-path="url(#dot-clip-0)"></g></g></g>
+    <g class="dot"><circle class="hole" cx="710" cy="136.67" r="20"/><g class="light"><circle class="ring" cx="710" cy="136.67" r="26.5"/><circle class="disc" cx="710" cy="136.67" r="20.5"/><g class="icon" clip-path="url(#dot-clip-1)"></g></g></g>
+    <g class="dot"><circle class="hole" cx="710" cy="190.33" r="20"/><g class="light"><circle class="ring" cx="710" cy="190.33" r="26.5"/><circle class="disc" cx="710" cy="190.33" r="20.5"/><g class="icon" clip-path="url(#dot-clip-2)"></g></g></g>
+    <g class="dot"><circle class="hole" cx="710" cy="244" r="20"/><g class="light"><circle class="ring" cx="710" cy="244" r="26.5"/><circle class="disc" cx="710" cy="244" r="20.5"/><g class="icon" clip-path="url(#dot-clip-3)"></g></g></g>
+  </svg>
+</div>
+
+<script type="module" src="bp/start.js"></script>
+<script src="js/icons.js"></script>
+<script src="js/logo.js"></script>
+</body>
+</html>
