@@ -38,5 +38,6 @@ if it isn't found). Nothing in `dev/` is sent to players.
 
 ## License
 
-whip_loadingscreen is licensed under the GNU LGPL 3.0; see `LICENSE`. The licence doesn't cover the WHIP name and
-logo. Third-party material is listed in `whip_core`'s `NOTICE.md`, including three.js (MIT).
+whip_loadingscreen is licensed under the GNU LGPL 3.0; see `COPYING.LESSER`, and `COPYING` for the GPL 3.0 it builds
+on. The licence doesn't cover the WHIP name and logo. `NOTICE.md` says what else it doesn't cover, including three.js
+(MIT); `whip_core`'s `NOTICE.md` is the full list.
