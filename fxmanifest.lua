@@ -6,6 +6,7 @@ name 'whip_loadingscreen'
 author 'Whippy'
 description 'Loading screen — the whip logo over a drifting blueprint, its I the loading light.'
 version '1.6.2'
+whip_updates 'WHIPFX/whip_loadingscreen'   -- whip_core checks this repository's releases for a newer version
 
 -- `loadscreen`, not `ui_page`. The game shows this page from the moment the player connects until
 -- something calls ShutdownLoadingScreen.
